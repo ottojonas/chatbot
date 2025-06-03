@@ -4,6 +4,7 @@ import styles from "../styles/auth.module.css";
 import { useRouter } from "next/router";
 import { FaLock, FaUser } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import Link from "next/link";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -63,7 +64,8 @@ const Login = () => {
           <button type="submit">Login</button>
           <div className={loginStyles["register-link"]}>
             <p>
-              Don't have an account? <a href="/register">Register Here</a>
+              Don&apos;t have an account?{" "}
+              <Link href="/register">Register Here</Link>
             </p>
           </div>
         </form>
