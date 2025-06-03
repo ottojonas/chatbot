@@ -42,7 +42,7 @@ const config: NextConfig = {
     });
     return config; // Make sure to return the config!
   },
-  distDir: "dist",
+  distDir: ".next",
   reactStrictMode: true,
   rewrites: async () => [{ source: "/old-path", destination: "/new-path" }],
   assetPrefix: "",
