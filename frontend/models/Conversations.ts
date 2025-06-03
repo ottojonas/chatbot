@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface IConversation {
   key: string;
@@ -45,7 +45,8 @@ const ConversationSchema: Schema = new mongoose.Schema({
   },
 });
 
-const Conversation = mongoose.models.Conversation ||
-    mongoose.model<IConversation>("Conversation", ConversationSchema)
+const Conversation =
+  mongoose.models.Conversation ||
+  mongoose.model<IConversation>("Conversation", ConversationSchema);
 
-export default Conversation
+export default Conversation;

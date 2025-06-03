@@ -57,9 +57,11 @@ export default async function handler(
         });
       }
       const objectId = new mongoose.Types.ObjectId(user_id as string);
-      const conversations = await Conversation.find({
-        user_id: objectId,
-      }).exec();
+      const conversations = await (Conversation as any)
+        .find({
+          user_id: objectId,
+        })
+        .exec();
       return res.status(200).json(conversations);
     } catch (error) {
       console.error(`Error fetching conversations: ${error}`);
@@ -93,10 +95,12 @@ export default async function handler(
       if (title !== undefined) updatedData.title = title;
       if (desc !== undefined) updatedData.desc = desc;
 
-      const updatedConversation = await Conversation.findOneAndUpdate(
+      const updatedConversation = await (Conversation as any).findOneAndUpdate(
         { key, user_id },
         updatedData,
-        { new: true }
+        {
+          new: true,
+        }
       );
 
       if (!updatedConversation) {

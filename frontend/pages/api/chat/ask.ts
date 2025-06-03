@@ -26,7 +26,7 @@ export default async function handler(
       }
 
       try {
-        const documents: ITrainingDocument[] = await TrainingDocument.find({})
+        const documents: ITrainingDocument[] = await (TrainingDocument as any).find({})
           .lean()
           .exec();
 
