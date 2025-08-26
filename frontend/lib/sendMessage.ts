@@ -35,7 +35,7 @@ const saveMessage = async (message: MessageItem, conversationKey: string) => {
 const updateConversation = async (
   conversationKey: string,
   userId: string,
-  updates: any,
+  updates: any
 ) => {
   const response = await fetch(
     `/api/chat/conversations?user_id=${userId}&key=${conversationKey}`,
@@ -43,7 +43,7 @@ const updateConversation = async (
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updates),
-    },
+    }
   );
 
   if (!response.ok) {
@@ -80,7 +80,8 @@ export const sendMessage = async (
   conversationKey: string,
   userId: string,
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>,
-  setConversations: React.Dispatch<React.SetStateAction<any[]>>,
+  setConversations: React.Dispatch<React.SetStateAction<any[]>>
+  setLoading
 ) => {
   if (!text.trim()) {
     console.error("message content is empty");
@@ -88,12 +89,13 @@ export const sendMessage = async (
   }
 
   try {
+    setLoading?.(true)
     let currentConversationKey = conversationKey;
 
     if (!currentConversationKey) {
       const newConversation = await createConversation(
         userId,
-        text.substring(0, 20),
+        text.substring(0, 20)
       );
       currentConversationKey = newConversation.key;
       setConversations((prev) => [...prev, newConversation]);
@@ -117,14 +119,14 @@ export const sendMessage = async (
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     const savedUserMessage = await saveMessage(
       userMessage,
-      currentConversationKey,
+      currentConversationKey
     );
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
         msg.key === userMessage.key
           ? { ...msg, key: savedUserMessage.newMessage.key }
-          : msg,
-      ),
+          : msg
+      )
     );
 
     if (!isFirstUserMessageSet) {
@@ -135,8 +137,8 @@ export const sendMessage = async (
         prevConversations.map((conversation) =>
           conversation.key === currentConversationKey
             ? { ...conversation, title: userMessage.text.substring(0, 20) }
-            : conversation,
-        ),
+            : conversation
+        )
       );
       isFirstUserMessageSet = true;
     }
@@ -174,14 +176,14 @@ export const sendMessage = async (
     setMessages((prevMessages) => [...prevMessages, assistantMessage]);
     const savedAssistantMessage = await saveMessage(
       assistantMessage,
-      currentConversationKey,
+      currentConversationKey
     );
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
         msg.key === assistantMessage.key
           ? { ...msg, key: savedAssistantMessage.newMessage.key }
-          : msg,
-      ),
+          : msg
+      )
     );
 
     if (!isFirstAssistantMessageSet) {
@@ -192,15 +194,15 @@ export const sendMessage = async (
         prevConversations.map((conversation) =>
           conversation.key === currentConversationKey
             ? { ...conversation, desc: assistantMessage.text.substring(0, 30) }
-            : conversation,
-        ),
+            : conversation
+        )
       );
       isFirstAssistantMessageSet = true;
     }
 
     if (assistantMessage.rating === "bad") {
       setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg.key !== assistantMessage.key),
+        prevMessages.filter((msg) => msg.key !== assistantMessage.key)
       );
 
       await fetch(`/api/chat/badResponse`, {
@@ -214,5 +216,7 @@ export const sendMessage = async (
   } catch (error) {
     console.error("Error in sendMessage:", error);
     throw error;
+  } finally {
+    setLoading?.(false)
   }
 };
