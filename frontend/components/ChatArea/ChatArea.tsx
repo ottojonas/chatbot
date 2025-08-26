@@ -21,6 +21,7 @@ export type MessageItem = {
 interface ChatProps {
   messages: MessageItem[];
   loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>;
   conversationKey: string;
   sendMessage: (text: string) => Promise<string | void>;
@@ -34,6 +35,7 @@ const ChatArea: React.FC<ChatProps> = ({
   sendMessage,
   setConversationKey,
   loading,
+  setLoading,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
 

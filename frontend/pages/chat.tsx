@@ -92,6 +92,7 @@ const Chat = () => {
       <ChatArea
         messages={messages}
         loading={loading}
+        setLoading={setLoading}
         setMessages={setMessages}
         conversationKey={conversationKey}
         sendMessage={(text) =>
