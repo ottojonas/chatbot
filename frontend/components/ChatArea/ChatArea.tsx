@@ -20,6 +20,7 @@ export type MessageItem = {
 
 interface ChatProps {
   messages: MessageItem[];
+  loading: boolean;
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>;
   conversationKey: string;
   sendMessage: (text: string) => Promise<string | void>;
@@ -32,9 +33,9 @@ const ChatArea: React.FC<ChatProps> = ({
   conversationKey,
   sendMessage,
   setConversationKey,
+  loading,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [loading, setLoading] = useState(false);
 
   const handleSendMessage = async (text: string) => {
     const newConversationKey = await sendMessage(text);
@@ -55,7 +56,7 @@ const ChatArea: React.FC<ChatProps> = ({
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
-          },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch messages");
@@ -99,7 +100,7 @@ const ChatArea: React.FC<ChatProps> = ({
 
       // Remove the bad message from the UI
       setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg.key !== message.key),
+        prevMessages.filter((msg) => msg.key !== message.key)
       );
 
       // Get a new response
@@ -170,7 +171,7 @@ const ChatArea: React.FC<ChatProps> = ({
       style={{ marginLeft: "384px", marginRight: "320px" }}
     >
       {loading && (
-        <div className="flex justify-center items-center py-4">
+        <div className="flex items-center justify-center py-4">
           <span className="text-gray-500">Loading...</span>
         </div>
       )}
