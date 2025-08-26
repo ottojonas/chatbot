@@ -34,6 +34,7 @@ const ChatArea: React.FC<ChatProps> = ({
   setConversationKey,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleSendMessage = async (text: string) => {
     const newConversationKey = await sendMessage(text);
@@ -72,6 +73,7 @@ const ChatArea: React.FC<ChatProps> = ({
   }, [conversationKey, setMessages]);
 
   const handleThumbsDown = async (message: MessageItem) => {
+    setLoading(true);
     try {
       // First, mark the message as bad
       const badResponse = await fetch(`/api/chat/badResponse`, {
@@ -157,6 +159,8 @@ const ChatArea: React.FC<ChatProps> = ({
     } catch (error) {
       console.error("Error regenerating response:", error);
       // Optionally show an error message to the user
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -165,6 +169,11 @@ const ChatArea: React.FC<ChatProps> = ({
       className="chat-container"
       style={{ marginLeft: "384px", marginRight: "320px" }}
     >
+      {loading && (
+        <div className="flex justify-center items-center py-4">
+          <span className="text-gray-500">Loading...</span>
+        </div>
+      )}
       <div className="px-4 pt-16 pb-48 mx-auto max-w-3x1 chat-messages">
         {Array.isArray(messages) &&
           messages
