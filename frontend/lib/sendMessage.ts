@@ -80,7 +80,7 @@ export const sendMessage = async (
   conversationKey: string,
   userId: string,
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>,
-  setConversations: React.Dispatch<React.SetStateAction<any[]>>
+  setConversations: React.Dispatch<React.SetStateAction<any[]>>,
   setLoading
 ) => {
   if (!text.trim()) {
@@ -89,7 +89,7 @@ export const sendMessage = async (
   }
 
   try {
-    setLoading?.(true)
+    setLoading?.(true);
     let currentConversationKey = conversationKey;
 
     if (!currentConversationKey) {
@@ -217,6 +217,6 @@ export const sendMessage = async (
     console.error("Error in sendMessage:", error);
     throw error;
   } finally {
-    setLoading?.(false)
+    setLoading?.(false);
   }
 };
