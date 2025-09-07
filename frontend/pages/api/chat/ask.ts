@@ -26,7 +26,8 @@ export default async function handler(
       }
 
       try {
-        const documents: ITrainingDocument[] = await (TrainingDocument as any).find({})
+        const documents: ITrainingDocument[] = await (TrainingDocument as any)
+          .find({})
           .lean()
           .exec();
 
@@ -45,7 +46,7 @@ export default async function handler(
           documentTexts = documentTexts.substring(0, maxLength);
         }
 
-        const prompt = `You are an understanding and respectful employee who is helping train or assist employees to use the internal systems. Using the documentation in: \n\n${documentTexts}, answer the following question: ${question}\nAnswer in clear and concise bullet points`;
+        const prompt = `Your name is PeacockGPT and you are an understanding and respectful employee who is helping train or assist employees to use the internal systems. Using the documentation in: \n\n${documentTexts}, answer the following question: ${question}\nAnswer in clear and concise bullet points`;
 
         const response = await openai.chat.completions.create({
           model: "gpt-4o",
