@@ -35,7 +35,13 @@ export default async function handler(
           key: doc.key,
           title: doc.title,
           content: doc.content,
+          images: doc.images || [],
         }));
+
+        const relevantDocs = filteredDocuments.filter((doc) =>
+          doc.content.includes(question)
+        );
+        const images = relevantDocs.flatMap((doc) => doc.images || []);
 
         let documentTexts = filteredDocuments
           .map((doc) => doc.content)
@@ -55,7 +61,7 @@ export default async function handler(
         });
 
         const answer = response?.choices?.[0]?.message?.content?.trim();
-        res.status(200).json({ answer });
+        res.status(200).json({ answer, images });
       } catch (error) {
         if (error instanceof Error) {
           console.error("Error generating response: ", error.message);
