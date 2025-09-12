@@ -156,6 +156,10 @@ const ChatArea: React.FC<ChatProps> = ({
             content: newMessage.content,
             date: newMessage.date,
             rating: newMessage.rating,
+            images: (data.images || []).map((url: string, idx: number) => ({
+              key: idx,
+              url,
+            })),
           },
         }),
       });
@@ -179,15 +183,25 @@ const ChatArea: React.FC<ChatProps> = ({
       )}
       <div className="px-4 pt-16 pb-48 mx-auto max-w-3x1 chat-messages">
         {Array.isArray(messages) &&
-          messages
-            .filter(Boolean)
-            .map((item) => (
-              <ChatItem
-                item={item}
-                key={item.key}
-                onThumbsDown={handleThumbsDown}
-              />
-            ))}
+          messages.filter(Boolean).map((item) => (
+            <div key={item.key}>
+              <ChatItem item={item} onThumbsDown={handleThumbsDown} />
+              {/* Display images if present */}
+              {item.images && item.images.length > 0 && (
+                <div className="chat-images">
+                  {item.images.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img.url}
+                      alt={`Step ${idx + 1}`}
+                      className="chat-image"
+                      style={{ maxWidth: "300px", margin: "8px 0" }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
       </div>
       <ChatInput
         setMessages={setMessages}
