@@ -81,7 +81,6 @@ const Chat = () => {
 
   return (
     <>
-      {/* <CustomHead title="Chat bot" /> */}
       <ChatHeader />
       <Sidebar />
       <ChatHistory
